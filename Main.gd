@@ -4,7 +4,7 @@ extends Node2D
 onready var dim = Vector2(50,50)
 onready var perc=50
 onready var mat=[]
-onready var myseed = 40
+onready var myseed = 8021374
 onready var currentScene = get_tree().get_root().get_child(get_tree().get_root().get_child_count() -1)
 
 
@@ -49,36 +49,39 @@ func draw():
 			add_child(tile)
 			
 	print(get_child_count())
-	
+
 func vecinos(x,y):
 	var cantvecinos = 0
 	for i in [x-1,x,x+1]:
 		for j in [y-1,y,y+1]: 
 			if(i>=0 && i<dim.x && j>=0 && j<dim.y):
-				if(x==i and y==j):
+				if(i == x && j == y):
 					continue
 				else:
-					if(matget(i,j) == 1):
-						cantvecinos = cantvecinos +1;
+					cantvecinos = cantvecinos + matget(i,j)
+			else:
+				cantvecinos = cantvecinos +1;
 	return cantvecinos
 func suavizar():
-	for i in range(dim.x):
-		for j in range(dim.y):
+	for i in range(50):
+		for j in range(50):
 			var cantmuros = vecinos(i,j)
-			if(cantmuros > 4):
+			if(cantmuros >=5 ):
 				matset(i,j,1)
 			else:
 				matset(i,j,0)
-func z(x,y):
-	for i in [x,x-1,x+1]:
-		print(i)
+		var t = OS.get_ticks_msec()
+
 func _ready():
 	createMat()
 	fillmat()
 	#printmat()
 	suavizar()
 	draw()
-	print(vecinos(0,0))
+	
+	
+	
+	print(vecinos(4,4))
 	
 
 
